@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tapas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<!-- Ambient Background -->
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="app-shell">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">◈</span>
+      <span class="brand-name">Tapas</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-panel="dashboard" onclick="switchPanel(this,'dashboard')">
+        <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" data-panel="timer" onclick="switchPanel(this,'timer')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 3"/><path d="M9 3h6"/></svg>
+        Timer
+      </a>
+      <a class="nav-item" data-panel="tasks" onclick="switchPanel(this,'tasks')">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Tasks
+      </a>
+      <a class="nav-item" data-panel="analytics" onclick="switchPanel(this,'analytics')">
+        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        Analytics
+      </a>
+      <a class="nav-item"
+   id="spotifyOpenBtn">
+
+  <svg viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"/>
+  </svg>
+
+  Spotify
+
+</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="streak-badge">
+        <span class="streak-fire">🔥</span>
+        <div>
+          <div class="streak-num" id="sideStreak">0</div>
+          <div class="streak-label">Day Streak</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="greeting-block">
+          <span class="greeting-text" id="greetingText">Good Morning</span>
+          <span class="greeting-sub">Let's crush your goals today.</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="focus-score-pill">
+          <span class="pill-label">Focus Score</span>
+          <span class="pill-value" id="topFocusScore">0</span>
+        </div>
+        <div class="clock-display" id="liveClock">00:00</div>
+      </div>
+    </header>
+
+    <!-- ── PANEL: DASHBOARD ── -->
+    <section class="panel active" id="panel-dashboard">
+      <div class="stats-row">
+        <div class="stat-card" data-color="purple">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-body">
+            <div class="stat-value" id="statFocusTime">0m</div>
+            <div class="stat-label">Focus Time Today</div>
+          </div>
+          <div class="stat-bar"><div class="stat-fill" id="fillFocusTime" style="width:0%"></div></div>
+        </div>
+        <div class="stat-card" data-color="blue">
+          <div class="stat-icon">✅</div>
+          <div class="stat-body">
+            <div class="stat-value" id="statTasksDone">0</div>
+            <div class="stat-label">Tasks Completed</div>
+          </div>
+          <div class="stat-bar"><div class="stat-fill" id="fillTasks" style="width:0%"></div></div>
+        </div>
+        <div class="stat-card" data-color="cyan">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-body">
+            <div class="stat-value" id="statSessions">0</div>
+            <div class="stat-label">Pomodoro Sessions</div>
+          </div>
+          <div class="stat-bar"><div class="stat-fill" id="fillSessions" style="width:0%"></div></div>
+        </div>
+        <div class="stat-card" data-color="pink">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-body">
+            <div class="stat-value" id="statStreak">0</div>
+            <div class="stat-label">Day Streak</div>
+          </div>
+          <div class="stat-bar"><div class="stat-fill" id="fillStreak" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Mini Timer -->
+        <div class="glass-card card-timer-mini">
+          <div class="card-header">
+            <span class="card-title">Quick Focus</span>
+            <span class="badge-mode" id="dbModeBadge">FOCUS</span>
+          </div>
+          <div class="mini-timer-wrap">
+            <svg class="ring-svg" viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="52"/>
+              <circle class="ring-prog" id="dbRingProg" cx="60" cy="60" r="52"
+                stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+            </svg>
+            <div class="mini-timer-text">
+              <span class="mini-time" id="dbTimerDisplay">25:00</span>
+              <span class="mini-label" id="dbTimerLabel">Ready</span>
+            </div>
+          </div>
+          <div class="mini-controls">
+            <button class="ctrl-btn" id="dbPlayBtn" onclick="timerToggle()">▶</button>
+            <button class="ctrl-btn secondary" onclick="timerReset()">↺</button>
+          </div>
+        </div>
+
+        <!-- Task Quick View -->
+        <div class="glass-card card-tasks-mini">
+          <div class="card-header">
+            <span class="card-title">Today's Tasks</span>
+            <span class="task-count-badge" id="taskCountBadge">0</span>
+          </div>
+          <div class="task-mini-list" id="taskMiniList">
+            <div class="empty-state">No tasks yet. Add some! 👇</div>
+          </div>
+          <div class="quick-add-row">
+            <input type="text" class="quick-input" id="quickTaskInput" placeholder="Add a quick task…" onkeydown="if(event.key==='Enter')quickAddTask()"/>
+            <button class="add-btn" onclick="quickAddTask()">+</button>
+          </div>
+        </div>
+
+        <!-- Weekly Chart -->
+        <div class="glass-card card-chart">
+          <div class="card-header">
+            <span class="card-title">Weekly Focus</span>
+            <span class="chart-subtitle">Hours this week</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="weeklyChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Focus Score Ring -->
+        <div class="glass-card card-score">
+          <div class="card-title">Focus Score</div>
+          <div class="score-ring-wrap">
+            <svg class="score-ring" viewBox="0 0 140 140">
+              <circle class="score-bg" cx="70" cy="70" r="58"/>
+              <circle class="score-fill" id="scoreRingFill" cx="70" cy="70" r="58"
+                stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+            </svg>
+            <div class="score-inner">
+              <div class="score-num" id="scoreDisplay">0</div>
+              <div class="score-sub">/ 100</div>
+            </div>
+          </div>
+          <div class="score-label" id="scoreLevelLabel">Just Starting</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: TIMER ── -->
+    <section class="panel" id="panel-timer">
+      <div class="timer-page">
+        <div class="glass-card timer-card">
+          <div class="mode-switcher">
+            <button class="mode-btn active" id="modeFocus" onclick="setMode('focus',this)">Focus · 25m</button>
+            <button class="mode-btn" id="modeShort" onclick="setMode('short',this)">Short Break · 5m</button>
+            <button class="mode-btn" id="modeLong" onclick="setMode('long',this)">Long Break · 15m</button>
+          </div>
+
+          <div class="big-ring-wrap">
+            <svg class="big-ring" viewBox="0 0 300 300">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a855f7"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+              </defs>
+              <circle class="big-ring-bg" cx="150" cy="150" r="130"/>
+              <circle class="big-ring-prog" id="bigRingProg" cx="150" cy="150" r="130"
+                stroke-dasharray="816.8" stroke-dashoffset="816.8"
+                stroke="url(#ringGrad)"/>
+            </svg>
+            <div class="big-timer-inner">
+              <div class="big-time" id="bigTimerDisplay">25:00</div>
+              <div class="big-mode-label" id="bigModeLabel">FOCUS SESSION</div>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="timer-btn secondary" onclick="timerReset()">
+              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+            <button class="timer-btn primary" id="playPauseBtn" onclick="timerToggle()">
+              <svg id="playIcon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <button class="timer-btn secondary" onclick="skipSession()">
+              <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+            </button>
+          </div>
+
+          <div class="session-dots" id="sessionDots">
+            <span class="dot" id="dot0"></span>
+            <span class="dot" id="dot1"></span>
+            <span class="dot" id="dot2"></span>
+            <span class="dot" id="dot3"></span>
+          </div>
+          <div class="session-info">Session <span id="currentSessionNum">1</span> of 4 · Long break after</div>
+        </div>
+
+        <div class="glass-card timer-log-card">
+          <div class="card-header">
+            <span class="card-title">Session Log</span>
+            <button class="clear-btn" onclick="clearLog()">Clear</button>
+          </div>
+          <div class="log-list" id="sessionLog">
+            <div class="empty-state">Complete a session to see it here.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: TASKS ── -->
+    <section class="panel" id="panel-tasks">
+      <div class="tasks-page">
+        <div class="glass-card tasks-card">
+          <div class="card-header">
+            <span class="card-title">Task Manager</span>
+            <div class="task-filters">
+              <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
+              <button class="filter-btn" onclick="filterTasks('active',this)">Active</button>
+              <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
+            </div>
+          </div>
+
+          <div class="task-add-form">
+            <input type="text" class="task-input" id="taskInputMain" placeholder="What do you need to accomplish?"/>
+            <select class="priority-select" id="taskPriority">
+              <option value="high">🔴 High</option>
+              <option value="med" selected>🟡 Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+            <button class="add-task-btn" onclick="addTask()">Add Task</button>
+          </div>
+
+          <div class="task-progress-bar">
+            <div class="tp-label">Progress <span id="taskProgressText">0 / 0</span></div>
+            <div class="tp-track"><div class="tp-fill" id="taskProgressFill" style="width:0%"></div></div>
+          </div>
+
+          <div class="task-list" id="mainTaskList">
+            <div class="empty-state">No tasks here yet. Add one above! ✨</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PANEL: ANALYTICS ── -->
+    <section class="panel" id="panel-analytics">
+      <div class="analytics-page">
+        <div class="analytics-top">
+          <div class="glass-card ana-card ana-big-chart">
+            <div class="card-header">
+              <span class="card-title">Focus Hours · 7 Days</span>
+              <div class="chart-legend">
+                <span class="legend-dot" style="background:#a855f7"></span> Focus
+                <span class="legend-dot" style="background:#3b82f6; margin-left:12px"></span> Target
+              </div>
+            </div>
+            <div class="chart-wrap tall">
+              <canvas id="anaWeekChart"></canvas>
+            </div>
+          </div>
+
+          <div class="glass-card ana-card ana-score-card">
+            <div class="card-title">Consistency</div>
+            <div class="consistency-grid" id="consistencyGrid"></div>
+            <div class="card-title" style="margin-top:20px">Peak Hours</div>
+            <div class="peak-hours" id="peakHours"></div>
+          </div>
+        </div>
+
+        <div class="analytics-bottom">
+          <div class="glass-card ana-card">
+            <div class="card-title">Session Breakdown</div>
+            <div class="chart-wrap medium">
+              <canvas id="sessionChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card ana-card">
+            <div class="card-title">Task Completion Rate</div>
+            <div class="chart-wrap medium">
+              <canvas id="taskChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card ana-card stats-summary">
+            <div class="card-title">All-Time Stats</div>
+            <div class="all-time-list" id="allTimeStats"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="storage.js"></script>
+<script src="timer.js"></script>
+<script src="tasks.js"></script>
+<script src="analytics.js"></script>
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script src="app.js"></script>
+<!-- ── SPOTIFY POPUP ── -->
+
+<div class="spotify-modal" id="spotifyModal">
+
+  <div class="spotify-player glass-card">
+
+    <button class="close-spotify"
+            id="closeSpotify">
+      ✕
+    </button>
+
+    <h2>Spotify Focus Music</h2>
+
+    <button id="spotifyLoginBtn"
+            class="spotify-login-btn">
+
+      Connect Spotify
+
+    </button>
+
+    <div class="spotify-controls">
+
+      <button id="prevTrack">
+        ⏮
+      </button>
+
+      <button id="togglePlay">
+        ▶
+      </button>
+
+      <button id="nextTrack">
+        ⏭
+      </button>
+
+    </div>
+
+    <div class="spotify-track">
+
+      <img id="trackImage"
+           src=""
+           alt="track">
+
+      <div>
+
+        <h3 id="trackName">
+          No Track Playing
+        </h3>
+
+        <p id="artistName">
+          Spotify
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<script src="spotify.js"></script>
+</body>
+</html>
