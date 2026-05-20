@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tapas</title>
+  <title>ZeNova</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
@@ -25,7 +25,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <span class="brand-icon">◈</span>
-      <span class="brand-name">Tapas</span>
+      <span class="brand-name">ZeNova</span>
     </div>
 
     <nav class="sidebar-nav">
@@ -46,13 +46,13 @@
         Analytics
       </a>
       <a class="nav-item"
-   id="spotifyOpenBtn">
+   id="musicOpenBtn">
 
   <svg viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10"/>
   </svg>
 
-  Spotify
+  Focus Music
 
 </a>
     </nav>
@@ -348,67 +348,83 @@
 <script src="timer.js"></script>
 <script src="tasks.js"></script>
 <script src="analytics.js"></script>
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
-<script src="app.js"></script>
-<!-- ── SPOTIFY POPUP ── -->
 
-<div class="spotify-modal" id="spotifyModal">
+<!-- ── MUSIC POPUP ── -->
 
-  <div class="spotify-player glass-card">
+<div class="music-modal" id="musicModal">
 
-    <button class="close-spotify"
-            id="closeSpotify">
+  <div class="music-player glass-card">
+
+    <!-- CLOSE -->
+
+    <button class="close-music"
+            id="closeMusic">
+
       ✕
-    </button>
-
-    <h2>Spotify Focus Music</h2>
-
-    <button id="spotifyLoginBtn"
-            class="spotify-login-btn">
-
-      Connect Spotify
 
     </button>
 
-    <div class="spotify-controls">
+    <!-- TITLE -->
 
-      <button id="prevTrack">
-        ⏮
-      </button>
+    <h2>Focus Music</h2>
 
-      <button id="togglePlay">
-        ▶
-      </button>
+    <!-- COVER -->
 
-      <button id="nextTrack">
-        ⏭
-      </button>
+    <img
+      class="music-cover"
+      src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop"
+      alt="music">
+
+    <!-- SONG INFO -->
+
+    <div class="music-info">
+
+      <h3 id="songTitle">
+        Deep Focus
+      </h3>
+
+      <p>
+        Lo-fi Beats
+      </p>
 
     </div>
 
-    <div class="spotify-track">
+    <!-- AUDIO -->
 
-      <img id="trackImage"
-           src=""
-           alt="track">
+    <audio id="audioPlayer">
 
-      <div>
+      <source
+        src="assets/music/deep2.mp3"
+        type="audio/mp3">
 
-        <h3 id="trackName">
-          No Track Playing
-        </h3>
+    </audio>
 
-        <p id="artistName">
-          Spotify
-        </p>
+    <!-- CONTROLS -->
 
-      </div>
+    <div class="music-controls">
+
+      <button id="prevBtn">
+        ⏮
+      </button>
+
+      <button id="playBtn">
+        ▶
+      </button>
+
+      <button id="pauseBtn">
+        ❚❚
+      </button>
+
+      <button id="nextBtn">
+        ⏭
+      </button>
 
     </div>
 
   </div>
 
 </div>
-<script src="spotify.js"></script>
+<script src="app.js"></script>
+<script src="music.js"></script>
 </body>
 </html>

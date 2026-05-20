@@ -591,21 +591,126 @@ body {
   font-size:20px;
 }
 
-/* TRACK */
+/* ── MUSIC MODAL ── */
 
-.spotify-track{
+.music-modal{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,0.7);
+
   display:flex;
+  justify-content:center;
   align-items:center;
-  gap:15px;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:0.3s;
+
+  z-index:999;
 }
 
-.spotify-track img{
-  width:80px;
-  height:80px;
+.music-modal.show{
+  opacity:1;
+  pointer-events:auto;
+}
 
-  border-radius:14px;
+/* PLAYER */
+
+.music-player{
+  width:400px;
+
+  position:relative;
+
+  padding:28px;
+
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+
+  align-items:center;
+}
+
+/* CLOSE */
+
+.close-music{
+  position:absolute;
+
+  top:15px;
+  right:15px;
+
+  border:none;
+  background:none;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-size:22px;
+}
+
+/* COVER */
+
+.music-cover{
+  width:100%;
+  height:220px;
 
   object-fit:cover;
+
+  border-radius:18px;
+}
+
+/* INFO */
+
+.music-info{
+  text-align:center;
+}
+
+.music-info h3{
+  font-size:22px;
+}
+
+.music-info p{
+  color:var(--text-2);
+
+  margin-top:4px;
+}
+
+/* CONTROLS */
+
+.music-controls{
+  display:flex;
+  gap:14px;
+}
+
+.music-controls button{
+  width:55px;
+  height:55px;
+
+  border:none;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+  color:white;
+
+  font-size:20px;
+
+  background:linear-gradient(
+    135deg,
+    var(--purple),
+    var(--blue)
+  );
+
+  transition:0.3s;
+}
+
+.music-controls button:hover{
+  transform:scale(1.08);
+
+  box-shadow:0 0 20px rgba(168,85,247,0.5);
 }
 
 /* ── RESPONSIVE ── */
